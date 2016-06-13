@@ -1,10 +1,15 @@
 from tkinter import *
+from time import sleep
 
 
-class Application(Frame):
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-        self.pack()
+class Application:
+    def __init__(self, master):
+        frame = Frame(master)
+        root.bind("<Button-1>", self.start)
+        frame.pack()
+        self.snake = []
+        self.head = 0
+
         self.createWidgets()
 
     def createWidgets(self):
@@ -32,25 +37,28 @@ class Application(Frame):
         # self.quit_button = Button(self, text="QUIT", fg="red", command=root.destroy)
         # self.quit_button.pack(side="bottom")
 
+    def start(self, event):
         # ***** Canvas *****
-        canvas = Canvas(self, width=804, height=804, bg="black")
+        canvas = Canvas(root, width=804, height=804, bg="black")
         canvas.pack()
+        boundary = canvas.create_rectangle(22, 22, 782, 782, fill="black", outline="white")
 
         # paramenters: (x top, y top, x bottom, y bottom)
-        black_box = canvas.create_rectangle(2,2,22,22, fill="white")
-        black_box2 = canvas.create_rectangle(22,2,42,22, fill="white")
+        snake = [100]
+        head = 0
+        snake[head] = canvas.create_rectangle(2, 2, 22, 22, fill="white")
+
+        black_box2 = canvas.create_rectangle(22, 2, 42, 22, fill="white")
         # canvas.delete(black_box)
         # canvas.delete(ALL)
 
         # ***** Status Bar *****
         status = Label(root, text="Welcome to Snake!", bd=1, relief=SUNKEN, anchor=W)
         status.pack(side=BOTTOM, fill=X)
-
-    def say_hi(self):
-        print("hi there, everyone!")
+        canvas.delete(snake[head])
 
 root = Tk()
 root.title("Snake") # Name the window
 root.geometry("850x850") # Change the size of the window
-app = Application(master=root)
-app.mainloop()
+app = Application(root)
+root.mainloop()
