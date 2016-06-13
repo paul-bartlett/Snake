@@ -1,64 +1,76 @@
-from tkinter import *
-from time import sleep
+#!/usr/bin/env python
+
+"""
+This is the full and final example from the Pygame Tutorial,
+"How Do I Make It Move". It creates 10 objects and animates
+them on the screen.
+
+Note it's a bit scant on error checking, but it's easy to read. :]
+Fortunately, this is python, and we needn't wrestle with a pile of
+error codes.
+"""
 
 
-class Application:
-    def __init__(self, master):
-        frame = Frame(master)
-        root.bind("<Button-1>", self.start)
-        frame.pack()
-        self.snake = []
-        self.head = 0
+#import everything
+import os, pygame
+from pygame.locals import *
 
-        self.createWidgets()
+main_dir = os.path.split(os.path.abspath("__file__"))[0]
 
-    def createWidgets(self):
-        # ***** Main Menu *****
-        menu = Menu(root)
-        root.config(menu=menu)
+#our game object class
+class GameObject:
+    def __init__(self, image, height, speed):
+        self.speed = speed
+        self.image = image
+        self.pos = image.get_rect().move(0, height)
+    def move(self):
+        self.pos = self.pos.move(self.speed, 0)
+        if self.pos.right > 600:
+            self.pos.left = 0
 
-        # ***** Sub Menu ******
-        subMenu = Menu(menu)
-        menu.add_cascade(label="File", menu=subMenu)
-        subMenu.add_command(label="Exit", command=root.destroy)
 
-        settingsMenu = Menu(menu)
-        menu.add_cascade(label="Settings", menu=settingsMenu)
-        settingsMenu.add_command(label="Change grid", command=None)
-        settingsMenu.add_separator()
-        settingsMenu.add_command(label="About", command=None)
+#quick function to load an image
+def load_image(name):
+    path = os.path.join(main_dir, 'data', name)
+    return pygame.image.load(path).convert()
 
-        # ***** Buttons *****
-        # self.hi_there = Button(self)
-        # self.hi_there["text"] = "Hello World\n(click me)"
-        # self.hi_there["command"] = self.say_hi
-        # self.hi_there.pack(side="top")
+
+#here's the full code
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((640, 480))
+
+    # player = load_image('player1.gif')
+    # background = load_image('liquid.bmp')
+    background = pygame.Surface(screen.get_size())
+    background = background.convert()
+    background.fill((250, 250, 250))
+    pygame.draw.rect(screen,(255, 255, 255), [20, 20, 20, 20])
+    # scale the background image so that it fills the window and
+    #   successfully overwrites the old sprite position.
+    # background = pygame.transform.scale2x(background)
+    # background = pygame.transform.scale2x(background)
+
+    # screen.blit(background, (0, 0))
+
+    # objects = []
+    # for x in range(10):
+    #     o = GameObject(player, x*40, x)
+    #     objects.append(o)
+
+    while 1:
+        for event in pygame.event.get():
+            if event.type in (QUIT, KEYDOWN):
+                return
         #
-        # self.quit_button = Button(self, text="QUIT", fg="red", command=root.destroy)
-        # self.quit_button.pack(side="bottom")
+        # for o in objects:
+        #     screen.blit(background, o.pos, o.pos)
+        # for o in objects:
+        #     o.move()
+        #     screen.blit(o.image, o.pos)
 
-    def start(self, event):
-        # ***** Canvas *****
-        canvas = Canvas(root, width=804, height=804, bg="black")
-        canvas.pack()
-        boundary = canvas.create_rectangle(22, 22, 782, 782, fill="black", outline="white")
+        pygame.display.update()
 
-        # paramenters: (x top, y top, x bottom, y bottom)
-        snake = [100]
-        head = 0
-        snake[head] = canvas.create_rectangle(2, 2, 22, 22, fill="white")
 
-        black_box2 = canvas.create_rectangle(22, 2, 42, 22, fill="white")
-        # canvas.delete(black_box)
-        # canvas.delete(ALL)
 
-        # ***** Status Bar *****
-        status = Label(root, text="Welcome to Snake!", bd=1, relief=SUNKEN, anchor=W)
-        status.pack(side=BOTTOM, fill=X)
-        canvas.delete(snake[head])
-
-root = Tk()
-root.title("Snake") # Name the window
-root.geometry("850x850") # Change the size of the window
-app = Application(root)
-root.mainloop()
+if __name__ == '__main__': main()
