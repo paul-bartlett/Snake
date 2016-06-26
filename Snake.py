@@ -7,7 +7,7 @@ from pygame.locals import *
 def dead(screen, score):
     font = pygame.font.SysFont('Arial', 20)
     post = font.render("Your score was: " + str(score), True, (255, 255, 255))
-    screen.blit(t, (50, 300));
+    screen.blit(post, (50, 300))
     pygame.display.update()
     pygame.time.wait(4000)
 
