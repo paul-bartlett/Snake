@@ -5,7 +5,7 @@ import pygame, random
 from pygame.locals import *
 
 #This method is used to determine if the snake has licked the fruit yet...mmm
-def lick(x1, x2, y1, y2):
+#def lick(x1, x2, y1, y2):
     
 #Method handles all operations after the snake has hit a wall or itself
 def rip(screen, score, font):
@@ -23,11 +23,13 @@ def main():
     framerate = 10;
     direction = 0;
     score = 0;
-    font = pygame.font.SysFont('Arial', 20);
 
     #initialize pygame
     pygame.init();
-    
+
+    #Set the font
+    font = pygame.font.SysFont('Arial', 20);
+
     #Set the screen size
     screen = pygame.display.set_mode((640, 640));
     
@@ -59,7 +61,7 @@ def main():
         
         #Update the score on the screen
         post = font.render(str(score), True, (0, 0, 0));
-        screen.blit(post, 10, 10);
+        screen.blit(post, (10, 10));
 
         pygame.display.update();
 
