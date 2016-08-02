@@ -23,6 +23,8 @@ def main():
     framerate = 10;
     direction = 0;
     score = 0;
+    x = 20;
+    y = 20;
 
     #initialize pygame
     pygame.init();
@@ -40,7 +42,6 @@ def main():
 
 
     pygame.display.set_caption("Snake");
-    pygame.draw.rect(screen,(255, 255, 255), [20, 20, 20, 20]);
 
     #Begin main game loop
     while True:
@@ -54,11 +55,16 @@ def main():
                 
             #If a key is pressed detect which direction it was in and dont allow 180 noscopes
             elif event.type == KEYDOWN:
-                if event.key == K_UP and direction != 0 : direction = 2
-                elif event.key == K_DOWN and direction != 2 : direction = 0
-                elif event.key == K_LEFT and direction != 1 : direction = 3
-                elif event.key == K_RIGHT and direction != 3 : direction = 1 
+                if   event.key == K_UP    and direction != 0 : direction = 2
+                elif event.key == K_DOWN  and direction != 2 : direction = 0
+                elif event.key == K_LEFT  and direction != 1 : direction = 3
+                elif event.key == K_RIGHT and direction != 3 : direction = 1
+        if   direction == 0 : y += 20
+        elif direction == 1 : x += 20
+        elif direction == 2 : y -= 20
+        elif direction == 3 : x -= 20
         
+        pygame.draw.rect(screen,(255, 255, 255), [x, y, 20, 20]);
         #Update the score on the screen
         post = font.render(str(score), True, (0, 0, 0));
         screen.blit(post, (10, 10));
