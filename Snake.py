@@ -18,51 +18,56 @@ def rip(screen, score, font):
 #Contains initalization and main game loop
 def main():
 
-    #local variables
-    clock = pygame.time.Clock();
-    framerate = 10;
-    direction = 0;
+    #Local variables
     score = 0;
+    white = (255,255,255)
+    black = (0,0,0)
 
-    #initialize pygame
+    #Defining LE snake dood
+    head_x = 300
+    head_y = 300
+    head_x_change = 0
+
+    #Initialize pygame
     pygame.init();
+
+    #Declaring the time lord
+    clock = pygame.time.Clock()
 
     #Set the font
     font = pygame.font.SysFont('Arial', 20);
 
-    #Set the screen size
+    #Set the screen size and name
     screen = pygame.display.set_mode((640, 640));
-    
-    #Initialize the background
-    background = pygame.Surface(screen.get_size());
-    background = background.convert();
-    background.fill((250, 250, 250));
-
-
     pygame.display.set_caption("Snake");
-    pygame.draw.rect(screen,(255, 255, 255), [20, 20, 20, 20]);
 
     #Begin main game loop
     while True:
 
-        #Continue refreshing the snake at the current framerate value
-        clock.tick(framerate);
-
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit();
-                
-            #If a key is pressed detect which direction it was in and dont allow 180 noscopes
-            elif event.type == KEYDOWN:
-                if event.key == K_UP and direction != 0 : direction = 2
-                elif event.key == K_DOWN and direction != 2 : direction = 0
-                elif event.key == K_LEFT and direction != 1 : direction = 3
-                elif event.key == K_RIGHT and direction != 3 : direction = 1 
-        
-        #Update the score on the screen
-        post = font.render(str(score), True, (0, 0, 0));
-        screen.blit(post, (10, 10));
+            if event.type == KEYDOWN:
+                if event.key == K_LEFT:
+                    head_x_change = -10
+                if event.key == K_RIGHT:
+                    head_x_change = 10
 
+            if event.type == KEYUP:
+                if event.key == K_LEFT or event.key == K_RIGHT:
+                    head_x_change = 0
+                
+
+        head_x += head_x_change
+
+        #Wipe your slate
+        screen.fill(black)
+
+        #draw the head
+        pygame.draw.rect(screen, white, [head_x, head_y, 20, 20]);
         pygame.display.update();
+
+        #Keeping it at 15 FPS so my graphics card doesnt overheat
+        clock.tick(15)
 
 if __name__ == '__main__': main()
