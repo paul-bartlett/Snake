@@ -9,7 +9,7 @@ The game Snake written in Python
 
 * Snake
 
-   * - [ ] Display the snake
+   * - [x] Display the snake
    * - [ ] Detect collision with GUI walls
    * - [ ] Redraw snake every [delay] moving in the direction of head
   
