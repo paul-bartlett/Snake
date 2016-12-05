@@ -57,7 +57,6 @@ def main():
                 if event.key == K_LEFT or event.key == K_RIGHT:
                     head_x_change = 0
                 
-
         head_x += head_x_change
 
         #Wipe your slate
