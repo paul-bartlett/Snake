@@ -5,12 +5,12 @@ The game Snake written in Python
 * GUI
    * - [x] Display the window 
    * - [ ] Display the score counter
-   * - [ ] Draw boundary
+   * - [x] Draw boundary
 
 * Snake
 
    * - [x] Display the snake
-   * - [ ] Detect collision with GUI walls
+   * - [x] Detect collision with GUI walls
    * - [ ] Redraw snake every [delay] moving in the direction of head
   
 * Objectives 
