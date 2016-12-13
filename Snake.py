@@ -4,44 +4,57 @@
 import pygame, random, time
 from pygame.locals import *
 
-def message_to_screen(screen, display_width, display_height, font, msg, color):
+def message_to_screen(msg, color):
     screen_text = font.render(msg, True, color)
     screen.blit(screen_text, [display_width/2, display_height/2])
 
-#Contains initalization and main game loop
-def main():
+#Local variables
+display_width = 640
+display_height = 640
+FPS = 30
+block_size = 20
+score = 0;
+white = (255,255,255)
+black = (0,0,0)
+red = (255, 0, 0)
 
-    #Local variables
-    display_width = 640
-    display_height = 640
-    FPS = 30
-    block_size = 20
-    score = 0;
-    white = (255,255,255)
-    black = (0,0,0)
-    red = (255, 0, 0)
+#Initialize pygame
+pygame.init();
+
+#Declaring the time lord
+clock = pygame.time.Clock()
+
+#Set the font
+font = pygame.font.SysFont('Arial', 20);
+
+#Set the screen size and name
+screen = pygame.display.set_mode((display_width, display_height));
+pygame.display.set_caption("Snake");
+
+#Begin main game loop
+def gameLoop():
 
     #Defining LE snake dood
     head_x = display_width/2
     head_y = display_height/2
     head_x_change = 0
     head_y_change = 0
+    dead = False
+    gameOver = False
 
-    #Initialize pygame
-    pygame.init();
+    while not dead:
+        while gameOver:
+            screen.fill(white)
+            message_to_screen("Game over, press C to play again or Q to quit", red);
+            pygame.display.update()
 
-    #Declaring the time lord
-    clock = pygame.time.Clock()
-
-    #Set the font
-    font = pygame.font.SysFont('Arial', 20);
-
-    #Set the screen size and name
-    screen = pygame.display.set_mode((display_width, display_height));
-    pygame.display.set_caption("Snake");
-
-    #Begin main game loop
-    while True:
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_q:
+                        dead = True
+                        gameOver = False
+                    elif event.key == K_c:
+                        gameLoop()
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -61,10 +74,7 @@ def main():
                     head_x_change = 0
 
         if head_x >= display_width or head_x <= 0 or head_y >= display_height or head_y <= 0:
-            message_to_screen(screen, display_width, display_height, font, "You Lose!", red)
-            pygame.display.update()
-            time.sleep(2)
-            pygame.quit();
+            gameOver = True
 
         head_x += head_x_change
         head_y += head_y_change
@@ -79,5 +89,7 @@ def main():
         #locking in the FPS so my graphics card doesnt overheat
         clock.tick(FPS)
 
-if __name__ == '__main__': main()
+    pygame.quit();
+    quit()
 
+gameLoop()
