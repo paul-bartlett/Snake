@@ -18,6 +18,9 @@ white = (255,255,255)
 black = (0,0,0)
 red = (255, 0, 0)
 
+apple_x = random.randint(0, display_width)
+apple_y = random.randint(0, display_height)
+
 #Initialize pygame
 pygame.init();
 
@@ -39,6 +42,7 @@ def gameLoop():
     head_y = display_height/2
     head_x_change = 0
     head_y_change = 0
+    head_size = 0
     dead = False
     gameOver = False
 
@@ -76,14 +80,22 @@ def gameLoop():
         if head_x >= display_width or head_x <= 0 or head_y >= display_height or head_y <= 0:
             gameOver = True
 
+        #Detect collision better lol
+        if head_x == apple_x and head == apple_y:
+            head_size += 1
+
         head_x += head_x_change
         head_y += head_y_change
 
         #Wipe your slate
         screen.fill(black)
 
-        #draw the head
-        pygame.draw.rect(screen, white, [head_x, head_y, block_size, block_size]);
+        #draw the head 
+        for x in range(1, head_size):
+            pygame.draw.rect(screen, white, [head_x-x, head_y-x, block_size, block_size]);
+
+        #Draw dat treat
+        pygame.draw.rect(screen, red, [apple_x, apple_y, block_size, block_size]);
         pygame.display.update();
 
         #locking in the FPS so my graphics card doesnt overheat
