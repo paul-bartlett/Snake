@@ -8,18 +8,19 @@ def message_to_screen(msg, color):
     screen_text = font.render(msg, True, color)
     screen.blit(screen_text, [display_width/2, display_height/2])
 
+def getSnake(head_x, head_y, block_size):
+    pygame.draw.rect(screen, orange, [head_x, head_y, block_size, block_size]);
+
 #Local variables
 display_width = 640
 display_height = 640
 FPS = 30
-block_size = 20
+block_size = 10
 score = 0;
 white = (255,255,255)
 black = (0,0,0)
+orange = (255, 127, 80)
 red = (255, 0, 0)
-
-apple_x = random.randint(0, display_width)
-apple_y = random.randint(0, display_height)
 
 #Initialize pygame
 pygame.init();
@@ -42,9 +43,11 @@ def gameLoop():
     head_y = display_height/2
     head_x_change = 0
     head_y_change = 0
-    head_size = 0
     dead = False
     gameOver = False
+
+    apple_x = random.randrange(0, (display_width-block_size)/10)*10 
+    apple_y = random.randrange(0, (display_height-block_size)/10)*10
 
     while not dead:
         while gameOver:
@@ -80,19 +83,20 @@ def gameLoop():
         if head_x >= display_width or head_x <= 0 or head_y >= display_height or head_y <= 0:
             gameOver = True
 
-        #Detect collision better lol
-        if head_x == apple_x and head == apple_y:
-            head_size += 1
-
         head_x += head_x_change
         head_y += head_y_change
+
+        #Detect collision better lol
+        if head_x == apple_x and head_y == apple_y:
+            apple_x = random.randrange(0, (display_width-block_size)/10)*10 
+            apple_y = random.randrange(0, (display_height-block_size)/10)*10
+
 
         #Wipe your slate
         screen.fill(black)
 
         #draw the head 
-        for x in range(1, head_size):
-            pygame.draw.rect(screen, white, [head_x-x, head_y-x, block_size, block_size]);
+        getSnake(head_x, head_y, block_size)
 
         #Draw dat treat
         pygame.draw.rect(screen, red, [apple_x, apple_y, block_size, block_size]);
