@@ -8,8 +8,13 @@ def message_to_screen(msg, color):
     screen_text = font.render(msg, True, color)
     screen.blit(screen_text, [display_width/2, display_height/2])
 
-def getSnake(head_x, head_y, block_size):
-    pygame.draw.rect(screen, orange, [head_x, head_y, block_size, block_size]);
+def drawBlock(colour, head_x, head_y, block_size):
+    pygame.draw.rect(screen, colour, [head_x, head_y, block_size, block_size]);
+
+def snake(block_size, snakeList):
+    for XnY in snakeList:
+        drawBlock(orange, [XnY[0]], [XnY[1]], block_size)
+
 
 #Local variables
 display_width = 640
@@ -45,6 +50,8 @@ def gameLoop():
     head_y_change = 0
     dead = False
     gameOver = False
+    snakeList = []
+    snakeHead = []
 
     apple_x = random.randrange(0, (display_width-block_size)/10)*10 
     apple_y = random.randrange(0, (display_height-block_size)/10)*10
@@ -86,20 +93,23 @@ def gameLoop():
         head_x += head_x_change
         head_y += head_y_change
 
-        #Detect collision better lol
+        #Wipe your slate
+        screen.fill(black)
+
+        #Draw dat treat
+        drawBlock(white, apple_x, apple_y, block_size)
+
+        snakeHead.append(head_x)
+        snakeHead.append(head_y)
+        snakeList.append(snakeHead)
+        
+        snake(block_size, snakeList)
+
+        #Check if good boy got the treat
         if head_x == apple_x and head_y == apple_y:
             apple_x = random.randrange(0, (display_width-block_size)/10)*10 
             apple_y = random.randrange(0, (display_height-block_size)/10)*10
 
-
-        #Wipe your slate
-        screen.fill(black)
-
-        #draw the head 
-        getSnake(head_x, head_y, block_size)
-
-        #Draw dat treat
-        pygame.draw.rect(screen, red, [apple_x, apple_y, block_size, block_size]);
         pygame.display.update();
 
         #locking in the FPS so my graphics card doesnt overheat
