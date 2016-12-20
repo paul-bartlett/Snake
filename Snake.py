@@ -51,6 +51,7 @@ def gameLoop():
     dead = False
     gameOver = False
     snakeList = []
+    snakeLength = 10
 
     #Generate random cordinates for the treat
     apple_x = random.randrange(0, (display_width-block_size)/10)*10 
@@ -104,6 +105,9 @@ def gameLoop():
         snakeHead.append(head_y)
         snakeList.append(snakeHead)
 
+        if len(snakeList) > snakeLength:
+            del snakeList[0]
+
         snake(block_size, snakeList)
 
         pygame.display.update()
@@ -112,6 +116,7 @@ def gameLoop():
         if head_x == apple_x and head_y == apple_y:
             apple_x = random.randrange(0, (display_width-block_size)/10)*10 
             apple_y = random.randrange(0, (display_height-block_size)/10)*10
+            snakeLength += 1
 
         #locking in the FPS so my graphics card doesnt overheat
         clock.tick(FPS)
