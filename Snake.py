@@ -4,19 +4,7 @@
 import pygame, random, time
 from pygame.locals import *
 
-def message_to_screen(msg, color):
-    screen_text = font.render(msg, True, color)
-    screen.blit(screen_text, [display_width/2, display_height/2])
-
-def drawBlock(colour, head_x, head_y, block_size):
-    pygame.draw.rect(screen, colour, [head_x, head_y, block_size, block_size]);
-
-def snake(block_size, snakeList):
-    for XnY in snakeList:
-        drawBlock(orange, [XnY[0]], [XnY[1]], block_size)
-
-
-#Local variables
+#Global variables
 display_width = 640
 display_height = 640
 FPS = 30
@@ -40,6 +28,18 @@ font = pygame.font.SysFont('Arial', 20);
 screen = pygame.display.set_mode((display_width, display_height));
 pygame.display.set_caption("Snake");
 
+def message_to_screen(msg, color):
+    screen_text = font.render(msg, True, color)
+    screen.blit(screen_text, [display_width/2, display_height/2])
+
+def drawBlock(colour, x, y, block_size):
+    pygame.draw.rect(screen, colour, [x, y, block_size, block_size]);
+
+def snake(block_size, snakeList):
+    for XnY in snakeList:
+        drawBlock(orange, XnY[0], XnY[1], block_size)
+
+
 #Begin main game loop
 def gameLoop():
 
@@ -51,13 +51,13 @@ def gameLoop():
     dead = False
     gameOver = False
     snakeList = []
-    snakeHead = []
 
+    #Generate random cordinates for the treat
     apple_x = random.randrange(0, (display_width-block_size)/10)*10 
     apple_y = random.randrange(0, (display_height-block_size)/10)*10
 
     while not dead:
-        while gameOver:
+        while gameOver == True:
             screen.fill(white)
             message_to_screen("Game over, press C to play again or Q to quit", red);
             pygame.display.update()
@@ -72,7 +72,7 @@ def gameLoop():
 
         for event in pygame.event.get():
             if event.type == QUIT:
-                pygame.quit();
+                dead = True
             if event.type == KEYDOWN:
                 if event.key == K_LEFT:
                     head_x_change = -block_size
@@ -99,18 +99,19 @@ def gameLoop():
         #Draw dat treat
         drawBlock(white, apple_x, apple_y, block_size)
 
+        snakeHead = []
         snakeHead.append(head_x)
         snakeHead.append(head_y)
         snakeList.append(snakeHead)
-        
+
         snake(block_size, snakeList)
+
+        pygame.display.update()
 
         #Check if good boy got the treat
         if head_x == apple_x and head_y == apple_y:
             apple_x = random.randrange(0, (display_width-block_size)/10)*10 
             apple_y = random.randrange(0, (display_height-block_size)/10)*10
-
-        pygame.display.update();
 
         #locking in the FPS so my graphics card doesnt overheat
         clock.tick(FPS)
