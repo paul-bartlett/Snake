@@ -29,16 +29,25 @@ screen = pygame.display.set_mode((displayWidth, displayHeight));
 pygame.display.set_caption("Snake");
 
 #Prints a message to the screen in the specified color
-def messageToScreen(msg, color):
-    screen_text = font.render(msg, True, color)
-    screen.blit(screen_text, [displayWidth/2, displayHeight/2])
+def messageToScreen(text, color):
+    #Create the surface with text and color
+    textSurf = font.render(text, True, color)
+
+    #Get the rectangle holding the text surface
+    textRect = textSurf.get_rect()
+
+    #Set that rectangle's center to the center of the page
+    textRect.center = (displayWidth / 2), (displayHeight / 2)
+
+    #Draw the text to the screen
+    screen.blit(textSurf, textRect)
 
 #Draws a block on the screen of size blockSize
 def drawBlock(colour, x, y, blockSize):
     pygame.draw.rect(screen, colour, [x, y, blockSize, blockSize]);
 
 #Draws out the snake definded in snakeList
-def snake(blockSize, snakeList):
+def drawSnake(blockSize, snakeList):
     for XnY in snakeList:
         drawBlock(orange, XnY[0], XnY[1], blockSize)
 
@@ -126,7 +135,7 @@ def gameLoop():
             del snakeList[0]
 
         #Draws the snake
-        snake(blockSize, snakeList)
+        drawSnake(blockSize, snakeList)
 
         #Updates the display
         pygame.display.update()
