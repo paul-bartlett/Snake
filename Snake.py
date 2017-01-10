@@ -21,23 +21,32 @@ pygame.init();
 #Declaring the time lord
 clock = pygame.time.Clock()
 
-#Set the font
-font = pygame.font.SysFont('Arial', 20);
+#Define the fonts
+fontSmall = pygame.font.SysFont('Arial', 15);
+fontMedium = pygame.font.SysFont('Arial', 20);
+fontLarge = pygame.font.SysFont('Arial', 30);
 
 #Set the screen size and name
 screen = pygame.display.set_mode((displayWidth, displayHeight));
 pygame.display.set_caption("Snake");
 
-#Prints a message to the screen in the specified color
-def messageToScreen(text, color):
-    #Create the surface with text and color
-    textSurf = font.render(text, True, color)
+#Prints a message to the screen in the specified color in the center of the screen
+#Y displace is used to move the message up or down on the Y axis from center.
+def messageToScreen(text, color, y_displace=0, size="medium"):
+
+    #Create the surface with text, fontsize and color
+    if size == "small":
+        textSurf = fontSmall.render(text, True, color)
+    elif size == "medium": 
+        textSurf = fontMedium.render(text, True, color)
+    elif size == "large":
+        textSurf = fontLarge.render(text, True, color)  
 
     #Get the rectangle holding the text surface
     textRect = textSurf.get_rect()
 
     #Set that rectangle's center to the center of the page
-    textRect.center = (displayWidth / 2), (displayHeight / 2)
+    textRect.center = (displayWidth / 2), (displayHeight / 2) + y_displace
 
     #Draw the text to the screen
     screen.blit(textSurf, textRect)
@@ -73,7 +82,8 @@ def gameLoop():
         #When the game is lost
         while gameOver:
             screen.fill(white)
-            messageToScreen("Game over, press C to play again or Q to quit", red);
+            messageToScreen("Game over", red, y_displace=-50, size="large");
+            messageToScreen("Press C to play again or Q to quit", black, y_displace=50);
             pygame.display.update()
 
             for event in pygame.event.get():

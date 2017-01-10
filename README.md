@@ -15,9 +15,9 @@ The game Snake written in Python
   
 * Objectives 
 
-   * - [ ] Display the objectives 
+   * - [x] Display the objectives 
    * - [ ] Detect collision with snake
    * - [ ] Decrement redraw delay
-   * - [ ] Increment size of snake
+   * - [x] Increment size of snake
    * - [ ] Increment the score
 
